@@ -12,7 +12,7 @@ Django CRUD application that has pagination and user authentication.
 
 ## Demo
 
-![DJANGO_CRUD_APP_DEMO](media/crud_app.mp4)
+DJANGO_CRUD_APP_DEMO_LINK - https://streamable.com/nul933
 
 
 ## Features
