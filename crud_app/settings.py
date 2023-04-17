@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ldb-r34=p*6m)i*6@=*^#5v=6p*%-=9dhx^o^!73g%27+t2cf)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
