@@ -11,10 +11,6 @@ services:
     deploy:
       mode: replicated
       replicas: 6
-      placement:
-        constraints:
-          - node.role == worker
-          - max_replicas_per_node=2
       restart_policy:
         condition: on-failure
         delay: 5s
