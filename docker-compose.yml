@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  backend:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8050"
+    volumes:
+      - .:/home/app/web
+    ports:
+      - 8050:8000
+    networks:
+      - backend
+networks:
+  backend:

@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  backend:
+    image: gokulandocker1/django-crud-app:latest
+    container_name: crud-app
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:80"
+    ports:
+      - 80:80
+    volumes:
+      - .:/home/app/web
+    deploy:
+      replicas: 6
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
