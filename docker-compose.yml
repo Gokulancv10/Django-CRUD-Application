@@ -1,14 +1,48 @@
 version: '3.7'
 
 services:
-  backend:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_PORT: "3306"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: Admin@123
+      MYSQL_DATABASE: crud-app
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Admin@123
+    ports:
+      - "3305:3306"
+    volumes:
+      - crud_app_mysql:/var/lib/mysql
+    networks:
+      - crud_app_network
+    healthcheck:
+      test: "/usr/bin/mysql --user=$${MYSQL_USER} --password=$${MYSQL_PASSWORD} --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  django:
+    # image: crud_app
     build: .
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8050"
+    command: sh -c "python manage.py migrate  && python manage.py runserver 0.0.0.0:8000"
+    container_name: crud_app
     volumes:
       - .:/home/app/web
     ports:
-      - 8050:8000
+      - "8000:8000"
     networks:
-      - backend
+      - crud_app_network
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    restart: on-failure
+
 networks:
-  backend:
+  crud_app_network:
+
+volumes:
+  crud_app_mysql:

@@ -77,10 +77,18 @@ WSGI_APPLICATION = 'crud_app.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'local': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'crud-app',
+        'USER': 'admin',
+        'PASSWORD': 'Admin@123',
+        'HOST': 'db', # This value from docker-compose database service name
+        'PORT': '3306', # This port from docker-compose database environment MYSQL_PORT=3306
+    },
 }
 
 

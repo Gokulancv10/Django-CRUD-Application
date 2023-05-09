@@ -1,2 +1,7 @@
 # Sqlite database
 db.sqlite3
+
+
+venv/
+
+*.pyc
