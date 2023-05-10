@@ -16,33 +16,42 @@ services:
       - "3305:3306"
     volumes:
       - crud_app_mysql:/var/lib/mysql
-    networks:
-      - crud_app_network
     healthcheck:
       test: "/usr/bin/mysql --user=$${MYSQL_USER} --password=$${MYSQL_PASSWORD} --execute \"SHOW DATABASES;\""
       interval: 10s
-      timeout: 5s
+      timeout: 30s
       retries: 3
 
   django:
     # image: crud_app
     build: .
-    command: sh -c "python manage.py migrate  && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && gunicorn crud_app.wsgi:application --bind 0.0.0.0:8000"
     container_name: crud_app
     volumes:
-      - .:/home/app/web
-    ports:
-      - "8000:8000"
-    networks:
-      - crud_app_network
+      - crud_app_static:/home/app/web/static
+      - crud_app_media:/home/app/web/media
+    expose:
+      - "8000"
     depends_on:
       db:
         condition: service_healthy
         restart: true
     restart: on-failure
 
-networks:
-  crud_app_network:
+  nginx:
+    build: conf/nginx-server
+    volumes:
+      - crud_app_static:/home/app/web/static
+      - crud_app_media:/home/app/web/media
+    ports:
+      - "1337:80"
+    depends_on:
+      django:
+        condition: service_started
+        restart: true
+    restart: on-failure
 
 volumes:
   crud_app_mysql:
+  crud_app_static:
+  crud_app_media:

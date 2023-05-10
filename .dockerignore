@@ -2,8 +2,8 @@
 
 venv/
 
-media/
+# media/
 
-static/
+# static/
 
 __pycache__/
