@@ -10,21 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-
+import environ
 from pathlib import Path
 
+env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, 'crud_app', '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ldb-r34=p*6m)i*6@=*^#5v=6p*%-=9dhx^o^!73g%27+t2cf)'
+SECRET_KEY = env.str("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -77,18 +80,19 @@ WSGI_APPLICATION = 'crud_app.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    "default": env.db()
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crud-app',
-        'USER': 'admin',
-        'PASSWORD': 'Admin@123',
-        'HOST': 'db', # This value from docker-compose database service name
-        'PORT': '3306', # This port from docker-compose database environment MYSQL_PORT=3306
-    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'crud-app',
+    #     'USER': 'admin',
+    #     'PASSWORD': 'Admin@123',
+    #     'HOST': 'db', # This value from docker-compose database service name
+    #     'PORT': '3306', # This port from docker-compose database environment MYSQL_PORT=3306
+    # },
 }
 
 
@@ -150,3 +154,5 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "login"
+
+SERVER_URL = env.str("SERVER_URL", "")
