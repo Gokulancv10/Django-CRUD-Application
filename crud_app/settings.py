@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'crud_app.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db()
+    "default": env.db(),
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
@@ -134,11 +134,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
-STATIC_ROOT = '/static'
+STATIC_ROOT = BASE_DIR / "static"
 
 MEDIA_URL = '/media/'
 
